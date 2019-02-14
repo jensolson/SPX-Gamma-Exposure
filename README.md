@@ -9,6 +9,9 @@ Dependencies: pandas, numpy, holidays, datetime, requests, pyVolLib, matplotlib
 
 ![SPX Gamma Exposure](gex.png)
 
-* "CBOE_Greeks" returns a plot of Black-Scholes option Greeks by option strike. Uses the same "filename" variable as above, to come from the CBOE website
+* "CBOE_Greeks" returns a plot of Black-Scholes option Greeks by option strike. Uses the same "filename" variable as above, to come from the CBOE website (example below)
+
+![CBOE Greeks](cboe_greeks.png)
+
 
 
