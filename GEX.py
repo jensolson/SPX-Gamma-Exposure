@@ -46,7 +46,7 @@ def TRTH_GEX(raw):
 
     df = raw.copy(deep=True)
     df.set_index('Trade Date', drop=True, inplace=True)
-    df.index = pd.to_datetime(df.index, infer_datetime_format=True)#format='%Y/%m/%d')
+    df.index = pd.to_datetime(df.index, infer_datetime_format=True)
 
     underlying = sorted(set(df['RIC']))[0]
     divisor = 10 if underlying in ['.SPX', 'SPXW'] else 100
@@ -54,20 +54,21 @@ def TRTH_GEX(raw):
     df['F'] = df[df['RIC'] == underlying]['Last']
 
     df = df[df['RIC'] != underlying]
+    
+    # Remove options with minimal open interest or with no bids
     df = df[(df['Open Interest'] > 10) &\
             (df['Bid'] > .05) 
            ].copy(deep=True)
     
     df['Mid'] = np.mean(df[['Bid', 'Ask']], axis=1)
 
-    # 4 for SPXW; 3 for SPX and SPY/TLT/GLD;
     df['TRTH Tag'] = df['RIC'].str[-12]
     df = df[df['TRTH Tag'].notnull()]
     df['TRTH Tag'] = df['TRTH Tag'].str.lower()
     df = df[df['TRTH Tag'].isin(list('abcdefghijklmnopqrstuvwx'))]
     df['Month'] = df['TRTH Tag'].apply(lambda x: letterToMonth[x])
 
-    # 5:7 and 7:9 for SPXW; 4:6 and 6:8 for SPY/TLT/GLD;
+    # Retrieve day and year from TRTH RIC tag
     df['Day'] = pd.to_numeric(df['RIC'].str[-11:-9], downcast='signed')
     df['Year'] = pd.to_numeric(df['RIC'].str[-9:-7], downcast='signed')+2000
 
@@ -84,8 +85,8 @@ def TRTH_GEX(raw):
     df = df[df['BDTE'] >= 1].copy(deep=True)
     df['Flag'] = df['TRTH Tag'].apply(lambda x: letterToFlag[x])
 
-    # -7:-2 for SPXW and SPY/TLT/GLD
-    df['Strike'] = pd.to_numeric(df['RIC'].str[-7:-2])/divisor # divide by 10 for SPX and SPXW; 100 for SPY/TLT/GLD
+    # Retrieve strike price from TRTH RIC tag
+    df['Strike'] = pd.to_numeric(df['RIC'].str[-7:-2])/divisor
 
     if underlying in ['.SPX', 'SPXW']:
         df['IV'] = df.apply(blackIV, axis=1)       
@@ -123,11 +124,11 @@ def CBOE_GEX(filename, sens=True, plot=False, occ=False):
     """
     # Extract top rows of dataframe for latest spot price and date
     raw = pd.read_table(filename)
-    spotF = float(raw.columns[0].split(',')[-2]) # 11/29/18 edit
-    ticker = raw.columns[0].split(',')[0][1:4] # 11/29/18 edit
+    spotF = float(raw.columns[0].split(',')[-2]) 
+    ticker = raw.columns[0].split(',')[0][1:4] 
     rf = .02
-    pltDate = raw.loc[0][0].split(',')[0][:11] # 11/29/18 edit
-    pltTime = raw.loc[0][0].split(',')[0][-8:] # 11/29/18 edit
+    pltDate = raw.loc[0][0].split(',')[0][:11] 
+    pltTime = raw.loc[0][0].split(',')[0][-8:] 
     dtDate = datetime.datetime.strptime(pltDate, '%b %d %Y').date()
 
     # Extract dataframe for analysis
@@ -330,7 +331,7 @@ def CBOE_Greeks(filename, low, high, incr, expiry, field):
     
     df = df.loc[(df['Open Int'] > 10) &\
                 (df['Bid'] > .05) &\
-                (df['BDTE'] >= 1) #&\
+                (df['BDTE'] >= 1) 
                 ].copy(deep=True)
 
     df['Mid'] = np.mean(df[['Bid', 'Ask']], axis=1)    
