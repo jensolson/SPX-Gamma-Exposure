@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Jens Olson
 jens.olson@gmail.com
