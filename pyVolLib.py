@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Jens Olson
-Kyrtos Management
-jo@kyrtosmgmt.com
-Last updated 11/14/18
+jens.olson@gmail.com
 """
 import numpy as np
 from py_vollib.black.implied_volatility import implied_volatility
