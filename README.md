@@ -1,7 +1,7 @@
 # SPX Gamma Exposure
 Calculates estimate of market maker gamma exposure derived from S&amp;P 500 index options
 
-Dependencies: pandas, numpy, holidays, datetime, requests, pyVolLib, matplotlib
+Dependencies: pandas, numpy, holidays, datetime, requests, py_vollib, pyVolLib (my helper file in this directory), matplotlib
 
 * "TRTH_GEX" requires a pandas dataframe of output from Thomson Reuters's Tick History, listing end of day SPX option quotes. Pandas dataframe must contain "RIC", "Trade Date", "Open Interest", and "Implied Volatility" fields to calculate time series of estimated daily market maker gamma exposure
 
