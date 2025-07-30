@@ -1,7 +1,3 @@
-"""
-Jens Olson
-jens.olson@gmail.com
-"""
 import numpy as np
 from py_vollib.black.implied_volatility import implied_volatility
 from py_vollib.black.greeks.numerical import delta, gamma, theta, vega
