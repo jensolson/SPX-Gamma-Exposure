@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Jens Olson
-jens.olson@gmail.com
-"""
 import pandas as pd
 import numpy as np
 import holidays
